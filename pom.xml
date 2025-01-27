@@ -51,8 +51,8 @@
 			    </execution>
 			  </executions>
 			  <configuration>
-			    <username>${anypoint.username}</username>
-			    <password>${anypoint.password}</password>
+			    <username>${Aravi99}</username>
+			    <password>${Aravind@123}</password>
 			    <environment>Sandbox</environment>
 			    <target>CloudHub</target>
 			  </configuration>
