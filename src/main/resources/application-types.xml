@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="CD" format="json">
+      <types:shape format="weave" example="examples/exampleDetails.txt"><![CDATA[%dw 2.0
+
+type CD = Array<{|  ID: String,   Address: String,   Email: String|}> {"example": "[{\\\"ID\\\":\\\"a08dL00000ANEkTQAX\\\",\\\"Address\\\":\\\"123 MG Road, Bangalore, Karnataka\\\",\\\"Email\\\":\\\"abc@gmail.com\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="CD2" format="json">
+      <types:shape format="weave" example="examples/exampleDetails-1.txt"><![CDATA[%dw 2.0
+
+type CD2 = Array<{|  Address: String,   Email: String|}> {"example": "[{\\\"Address\\\":\\\"123 MG Road, Bangalore, Karnataka\\\",\\\"Email\\\":\\\"abc@gmail.com\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#16d645ef-5adc-4ed9-b292-88e518a1d9b3">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="CD2"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

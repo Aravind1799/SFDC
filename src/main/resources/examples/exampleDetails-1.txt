@@ -1,0 +1,6 @@
+[
+{
+	"Address":"123 MG Road, Bangalore, Karnataka",
+	"Email":"abc@gmail.com"
+}
+]

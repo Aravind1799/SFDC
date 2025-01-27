@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="00ba5398-b508-4b28-9679-67c651fc8299" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="f7d5ebff-e93a-48e3-802e-a793cc6fca81" >
+		<salesforce:basic-connection username="apex@cct.cloudhub" password="Aravind@123" securityToken="ECWJXV7F8lnmW2NRvznpnPfI0" />
+	</salesforce:sfdc-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="8b91fac2-f1d5-490b-b0fb-eba7a1a5990f" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="Aravind@123" database="profiles"/>
+	</db:config>
+	<db:config name="Database_Config1" doc:name="Database Config" doc:id="d5a9d113-d28c-421c-ab4e-76a3733f390e" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="Aravind@123" database="profiles" />
+	</db:config>
+	<flow name="salesforcetomysqlFlow" doc:id="2655f731-7e3f-42ee-b691-cd894ab9974f" >
+		<http:listener doc:name="Listener" doc:id="64c5005a-4b07-45df-8475-549c5fae4920" config-ref="HTTP_Listener_config" path="/transfer"/>
+		<logger level="INFO" doc:name="Logger" doc:id="68083b2f-2017-4b9a-9983-42c8564c635a" message="Process Initiated"/>
+		<salesforce:query doc:name="Query" doc:id="5faafe81-11d2-4a4e-819d-d907d8416c80" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[select Address__c, Email__c from Customer_Profile__c]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="16d645ef-5adc-4ed9-b292-88e518a1d9b3">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	Address: payload01.Address__c default "",
+	Email: payload01.Email__c default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="37996824-5f56-425f-b61f-b42637e0a548" config-ref="Database_Config1">
+			<db:sql ><![CDATA[insert into customerProfiles (Address, Email) values (:Address, :Email)]]></db:sql>
+		</db:bulk-insert>
+		<logger level="INFO" doc:name="Logger" doc:id="b2fcc553-44e2-488a-8961-48d958e7b3c1" message="#[payload]"/>
+	</flow>
+</mule>
