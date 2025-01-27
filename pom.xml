@@ -98,8 +98,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-	</pluginRepositories>
-	<plugins>
 		<plugin>
 			  <groupId>org.mule.tools.maven</groupId>
 			  <artifactId>mule-maven-plugin</artifactId>
@@ -119,7 +117,10 @@
 			    <target>CloudHub</target>
 			  </configuration>
 		</plugin>
-	<plugins>
+	</pluginRepositories>
+	
+		
+	
 
 
 </project>
