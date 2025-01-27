@@ -38,6 +38,25 @@
 					</sharedLibraries>
 				</configuration>
 			</plugin>
+			<plugin>
+			  <groupId>org.mule.tools.maven</groupId>
+			  <artifactId>mule-maven-plugin</artifactId>
+			  <version>3.4.1</version>
+			  <executions>
+			    <execution>
+			      <id>deploy</id>
+			      <goals>
+			        <goal>deploy</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			  <configuration>
+			    <username>${anypoint.username}</username>
+			    <password>${anypoint.password}</password>
+			    <environment>Sandbox</environment>
+			    <target>CloudHub</target>
+			  </configuration>
+		</plugin>
 		</plugins>
 	</build>
 
@@ -98,25 +117,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-		<plugin>
-			  <groupId>org.mule.tools.maven</groupId>
-			  <artifactId>mule-maven-plugin</artifactId>
-			  <version>3.4.1</version>
-			  <executions>
-			    <execution>
-			      <id>deploy</id>
-			      <goals>
-			        <goal>deploy</goal>
-			      </goals>
-			    </execution>
-			  </executions>
-			  <configuration>
-			    <username>${anypoint.username}</username>
-			    <password>${anypoint.password}</password>
-			    <environment>Sandbox</environment>
-			    <target>CloudHub</target>
-			  </configuration>
-		</plugin>
+		
 	</pluginRepositories>
 	
 		
